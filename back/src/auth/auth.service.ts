@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UsersRepository } from 'src/users/users.repository';
+import { CreateUserDto } from './dto/create-user.dto';
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(    
+    private readonly usersRepository: UsersRepository
+  ) {}
+
+  async passwordEncrypter(password: string) {
+    const hashedPassword = bcrypt.hash(password, 10)
+    if (!hashedPassword) {
+      throw new BadRequestException('Password could not be hash')
+    }
+    return hashedPassword;
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  async create(createUserDto: CreateUserDto) {
+    const dbUser = await this.usersRepository.findByEmail(createUserDto.email)
+    if(dbUser) {
+      throw new BadRequestException('Email already exist');
+    }
+
+    if(createUserDto.password !== createUserDto.confirmPassword) {
+      throw new BadRequestException('Password do not match')
+    }
+
+    const hashedPassword = await this.passwordEncrypter(createUserDto.password)
+
+    this.usersRepository.createUser({...createUserDto, password: hashedPassword})
+    return 'User created successfully';
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
-  }
 }
