@@ -17,7 +17,7 @@ export class AuthService {
     return hashedPassword;
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto) {
     const dbUser = await this.usersRepository.findByEmail(createUserDto.email)
     if(dbUser) {
       throw new BadRequestException('Email already exist');
@@ -33,4 +33,18 @@ export class AuthService {
     return 'User created successfully';
   }
 
+  
+  async login(email, password) {
+    const dbUser = await this.usersRepository.findByEmail(email)
+
+    if(!dbUser) {
+      throw new BadRequestException('Invalid Credentials')
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, dbUser.password)
+
+    if(!isPasswordValid) {
+      throw new BadRequestException('Invalid Credentials')
+    }
+  }
 }
