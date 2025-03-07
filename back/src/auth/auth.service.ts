@@ -2,11 +2,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersRepository } from 'src/users/users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt'
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(    
-    private readonly usersRepository: UsersRepository
+    private readonly usersRepository: UsersRepository,
+    private readonly jwtService: JwtService
   ) {}
 
   async passwordEncrypter(password: string) {
@@ -46,5 +48,15 @@ export class AuthService {
     if(!isPasswordValid) {
       throw new BadRequestException('Invalid Credentials')
     }
+
+    const payload = {
+      sub: dbUser.id,
+      id: dbUser.id,
+      email: dbUser.email
+    }
+
+    const token = this.jwtService.sign(payload)
+
+    return {success: 'User logged in successfully', token }
   }
 }
