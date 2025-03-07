@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config'
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { postgresDataSourceConfig } from './config/data-source';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -16,7 +17,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({...configService.get('data-source')})
     }),
-    UsersModule, AuthModule],
+    UsersModule, AuthModule, 
+    JwtModule.register({
+      global: true,
+      signOptions: { expiresIn: '1h' },
+      secret: process.env.JWT_SECRET,
+    })
+  ],
   controllers: [],
   providers: [],
 })
