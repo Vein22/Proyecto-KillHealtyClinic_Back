@@ -8,8 +8,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
 
-  @UseGuards(AuthGuard)
   @Get()
+  @UseGuards(AuthGuard)
   async findAll(@Query('page') page: number=1, @Query('limit') limit: number=5) {
     return this.usersService.findAll(page, limit);
   }

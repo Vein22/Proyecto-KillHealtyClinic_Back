@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, Length, Matches } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsString, Length, Matches, MaxLength } from "class-validator";
 
 export class CreateUserDto {
 @IsString()
@@ -26,4 +26,18 @@ password: string;
     message: 'Password too weak. The password needs to contain capital letters, a number and a symbol.',
   })
 confirmPassword: string;
+
+@MaxLength(15)
+@IsNotEmpty()
+@IsNumber()
+Dni: number;
+
+@MaxLength(15)
+@IsNotEmpty()
+@IsNumber()
+phone: number;
+
+@IsNotEmpty()
+@IsString()
+adress: string;
 }

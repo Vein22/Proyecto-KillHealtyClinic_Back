@@ -15,6 +15,15 @@ export class User {
     @Column({nullable: false, unique: true})
     password: string;
 
+    @Column({nullable: false, unique: true})
+    Dni: number;
+
+    @Column({nullable: false, unique: true})
+    phone: number;
+
+    @Column({nullable: false, unique: true})
+    adress: string;
+
     @Column()
     role: string;
 

@@ -1,4 +1,4 @@
-import { DataSourceOptions } from "typeorm";
+import { DataSource, DataSourceOptions } from "typeorm";
 import { config as dotenvConfig } from "dotenv"
 import { registerAs } from "@nestjs/config";
 
@@ -15,7 +15,7 @@ const postgresDataSourceOptions: DataSourceOptions = {
     database: process.env.DB_NAME,
     schema: 'public',
     dropSchema: false,
-    synchronize: true,
+    synchronize: false,
     logging: true,
     entities: ["dist/**/*.entity{.ts,.js}"],
     migrations: ["dist/migrations/*{.js,.ts}"],
@@ -23,3 +23,5 @@ const postgresDataSourceOptions: DataSourceOptions = {
 }
 
 export const postgresDataSourceConfig = registerAs("data-source", () => postgresDataSourceOptions)
+
+export const connectionSource = new DataSource(postgresDataSourceOptions)
