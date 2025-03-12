@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
         private readonly jwtService: JwtService
     ) {}
 
-    canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+    async canActivate(context: ExecutionContext): Promise<boolean>{
         const request = context.switchToHttp().getRequest();
         const token = request.headers['authorization']?.split(' ')[1] ?? '';
 
@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
         }
         try {
             const secret = process.env.JWT_SECRET
-            const payload = this.jwtService.verify(token, {secret})
+            const payload = await this.jwtService.verifyAsync(token, {secret})
             payload.roles = ['Client'];
             request.user = payload;
             return true
