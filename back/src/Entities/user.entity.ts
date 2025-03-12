@@ -16,10 +16,10 @@ export class User {
     password: string;
 
     @Column({nullable: false, unique: true})
-    Dni: number;
+    dni: string;
 
     @Column({nullable: false, unique: true})
-    phone: number;
+    phone: string;
 
     @Column({nullable: false, unique: true})
     adress: string;

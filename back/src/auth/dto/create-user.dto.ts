@@ -29,13 +29,13 @@ confirmPassword: string;
 
 @MaxLength(15)
 @IsNotEmpty()
-@IsNumber()
-Dni: number;
+@IsString()
+dni: string;
 
 @MaxLength(15)
 @IsNotEmpty()
-@IsNumber()
-phone: number;
+@IsString()
+phone: string;
 
 @IsNotEmpty()
 @IsString()
