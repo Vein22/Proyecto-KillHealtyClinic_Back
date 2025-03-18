@@ -15,7 +15,7 @@ const postgresDataSourceOptions: DataSourceOptions = {
     database: process.env.DB_NAME,
     schema: 'public',
     dropSchema: false,
-    synchronize: false,
+    synchronize: true,
     logging: true,
     entities: ["dist/**/*.entity{.ts,.js}"],
     migrations: ["dist/migrations/*{.js,.ts}"],
