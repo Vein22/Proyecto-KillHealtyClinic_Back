@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from "src/auth/dto/create-user.dto";
 import { User } from "src/Entities/user.entity";
 import { Repository } from "typeorm";
+import { UpdatePfpDto } from "./dto/updatePfp.dto";
 
 
 @Injectable()
@@ -17,9 +18,20 @@ export class UsersRepository {
         return user;
     }
 
+    async findById(id: string) {
+        const user = await this.usersRepository.findOneBy({id})
+        return user;
+    }
+
     async createUser(createUserDto: CreateUserDto) {
         const user = this.usersRepository.create({...createUserDto, role:"Client"})
-        return this.usersRepository.save(user)
+        return await this.usersRepository.save(user)
+    }
+
+    
+    async updatePhoto(id: string , photoUrl: string) {
+    await this.usersRepository.update(id, {profilePhoto: photoUrl})
+    return { message: 'Photo updated successfully'}
     }
 
     async findAll(page: number, limit: number): Promise<User[]> {

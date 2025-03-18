@@ -40,4 +40,7 @@ phone: string;
 @IsNotEmpty()
 @IsString()
 adress: string;
+
+@IsString()
+profilePhoto: string
 }

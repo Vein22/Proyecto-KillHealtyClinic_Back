@@ -27,6 +27,9 @@ export class User {
     @Column()
     role: string;
 
+    @Column({nullable: true})
+    profilePhoto: string;
+
     @Column({default: false})
     verified: boolean;
 }

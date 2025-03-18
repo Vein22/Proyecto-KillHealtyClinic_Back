@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { User } from 'src/Entities/user.entity';
 import { CreateUserDto } from '../auth/dto/create-user.dto';
 import { UsersRepository } from './users.repository';
 
@@ -8,23 +9,16 @@ export class UsersService {
     private readonly usersRepository: UsersRepository
   ){}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
-
   async findAll(page: number, limit: number) {
     return this.usersRepository.findAll(page, limit)
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+  async updatePhoto(id: string, photoUrl: string) {
+    const user = await this.usersRepository.findById(id);
+    if(!user) {
+      throw new NotFoundException(`User with ID ${id} not found`)
+    }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    return await this.usersRepository.updatePhoto(id, photoUrl)
   }
 }
