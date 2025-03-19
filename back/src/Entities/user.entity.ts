@@ -24,7 +24,7 @@ export class User {
     @Column({nullable: false, unique: true})
     adress: string;
 
-    @Column()
+    @Column({nullable: false})
     role: string;
 
     @Column({nullable: true})

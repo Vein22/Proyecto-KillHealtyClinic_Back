@@ -52,7 +52,8 @@ export class AuthService {
     const payload = {
       sub: dbUser.id,
       id: dbUser.id,
-      email: dbUser.email
+      email: dbUser.email,
+      roles: [dbUser.role]
     }
 
     const token = this.jwtService.sign(payload)
