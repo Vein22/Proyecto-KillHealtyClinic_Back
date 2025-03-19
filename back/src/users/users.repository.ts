@@ -36,7 +36,7 @@ export class UsersRepository {
 
     async findAll(page: number, limit: number): Promise<User[]> {
         return this.usersRepository.find({
-            select:['id', 'name', 'email'],
+            select:['id', 'name', 'email', 'dni', 'phone', 'adress', 'role', 'profilePhoto', 'verified'],
             take: limit,
             skip: (page - 1) * limit,
         });
